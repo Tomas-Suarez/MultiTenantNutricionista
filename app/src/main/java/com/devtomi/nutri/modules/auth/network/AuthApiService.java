@@ -21,7 +21,7 @@ public interface AuthApiService {
     @POST("api/v1/auth/login")
     Call<TokenResponse> login(@Body LoginDTO loginDTO);
 
-    @POST("api/v1/auth/nutritionist")
+    @POST("api/v1/auth/register/nutritionist")
     Call<MessageResponse> registerNutritionist(@Body NutritionistRegisterDTO nutritionistRegisterDTO);
 
     @POST("api/v1/auth/register/patient")

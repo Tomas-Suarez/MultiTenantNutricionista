@@ -67,6 +67,11 @@ public class RegisterViewModel extends AndroidViewModel {
             return;
         }
 
+        if (dto.getCuit() == null || !dto.getCuit().matches("\\d{11}")) {
+            errorResult.setValue("El CUIT debe contener exactamente 11 dígitos numéricos sin guiones");
+            return;
+        }
+
         authApiService.registerNutritionist(dto).enqueue(new Callback<MessageResponse>() {
             @Override
             public void onResponse(@NonNull Call<MessageResponse> call, @NonNull Response<MessageResponse> response) {

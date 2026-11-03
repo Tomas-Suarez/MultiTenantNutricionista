@@ -46,8 +46,9 @@ public class RegisterActivity extends AppCompatActivity {
             if (binding.btnNutricionista.isChecked()) {
                 String firstName = binding.etName.getText().toString().trim();
                 String lastName = binding.etLastName.getText().toString().trim();
+                String cuit = binding.etCuit.getText().toString().trim();
 
-                registerViewModel.register(new NutritionistRegisterDTO(firstName, lastName, email, password), repeatPassword);
+                registerViewModel.register(new NutritionistRegisterDTO(firstName, lastName, email, password, cuit), repeatPassword);
             }
 
             if (binding.btnPaciente.isChecked()) {
@@ -63,6 +64,8 @@ public class RegisterActivity extends AppCompatActivity {
         binding.etName.setVisibility(visibility);
         binding.tvLastNameLabel.setVisibility(visibility);
         binding.etLastName.setVisibility(visibility);
+        binding.tvCuitLabel.setVisibility(visibility);
+        binding.etCuit.setVisibility(visibility);
     }
 
     private void configObservers() {
