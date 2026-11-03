@@ -23,12 +23,20 @@ public class LoginActivity extends AppCompatActivity {
 
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         configObservers();
+        setupListeners();
+    }
 
+    private void setupListeners() {
         binding.btnLogin.setOnClickListener(v->{
             String email = binding.etEmail.getText().toString().trim();
             String password = binding.etPassword.getText().toString().trim();
 
             loginViewModel.login(email, password);
+        });
+
+        binding.tvRegister.setOnClickListener(v->{
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
     }
 

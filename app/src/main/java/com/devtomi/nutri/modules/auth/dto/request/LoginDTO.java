@@ -1,8 +1,8 @@
 package com.devtomi.nutri.modules.auth.dto.request;
 
 public class LoginDTO {
-    String email;
-    String password;
+    private String email;
+    private String password;
 
     public LoginDTO(String password, String email) {
         this.password = password;
