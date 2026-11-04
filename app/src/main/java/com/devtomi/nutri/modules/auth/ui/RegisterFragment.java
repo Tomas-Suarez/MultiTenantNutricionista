@@ -1,27 +1,38 @@
 package com.devtomi.nutri.modules.auth.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
-import com.devtomi.nutri.databinding.ActivityRegisterBinding;
+import com.devtomi.nutri.R;
+import com.devtomi.nutri.databinding.FragmentRegisterBinding;
 import com.devtomi.nutri.modules.auth.dto.request.NutritionistRegisterDTO;
 import com.devtomi.nutri.modules.auth.dto.request.PatientRegisterDTO;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterFragment extends Fragment {
 
-    private ActivityRegisterBinding binding;
+    private FragmentRegisterBinding binding;
     private RegisterViewModel registerViewModel;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentRegisterBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         registerViewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
 
@@ -32,11 +43,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        binding.tvBackToLogin.setOnClickListener(v -> finish());
+        binding.tvBackToLogin.setOnClickListener(v ->
+                Navigation.findNavController(v).popBackStack(R.id.loginFragment, false));
 
-        binding.toggleGroupRole.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            changeVisibilityFields(binding.btnNutricionista.isChecked());
-        });
+        binding.toggleGroupRole.addOnButtonCheckedListener((group, checkedId, isChecked) ->
+                changeVisibilityFields(binding.btnNutricionista.isChecked()));
 
         binding.bRegister.setOnClickListener(v -> {
             String email = binding.etEmail.getText().toString().trim();
@@ -69,33 +80,37 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void configObservers() {
-        registerViewModel.getRegisterSuccessMessage().observe(this, message -> {
+        registerViewModel.getRegisterSuccessMessage().observe(getViewLifecycleOwner(), message -> {
             if (message != null) {
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
 
-                Intent intent = null;
+                NavController navController = Navigation.findNavController(requireView());
 
                 if (binding.btnNutricionista.isChecked()) {
                     String email = binding.etEmail.getText().toString().trim();
-                    intent = new Intent(RegisterActivity.this, VerificationEmailActivity.class);
-                    intent.putExtra("EXTRA_EMAIL", email);
+
+                    Bundle args = new Bundle();
+                    args.putString("email", email);
+
+                    navController.navigate(R.id.action_registerFragment_to_verificationEmailFragment, args);
                 }
 
                 if (binding.btnPaciente.isChecked()) {
-                    intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                }
-
-                if (intent != null) {
-                    startActivity(intent);
-                    finish();
+                    navController.popBackStack(R.id.loginFragment, false);
                 }
             }
         });
 
-        registerViewModel.getErrorResult().observe(this, errorMessage -> {
+        registerViewModel.getErrorResult().observe(getViewLifecycleOwner(), errorMessage -> {
             if (errorMessage != null && !errorMessage.isEmpty()) {
-                Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

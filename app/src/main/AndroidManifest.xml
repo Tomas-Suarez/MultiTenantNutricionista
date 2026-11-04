@@ -15,7 +15,7 @@
         android:theme="@style/Theme.MultiTenantNutricionista"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".modules.auth.ui.LoginActivity"
+            android:name=".modules.auth.ui.AuthActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -27,14 +27,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-        <activity
-            android:name=".modules.auth.ui.RegisterActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".modules.auth.ui.VerificationEmailActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

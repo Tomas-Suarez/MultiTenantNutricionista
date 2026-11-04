@@ -1,39 +1,51 @@
 package com.devtomi.nutri.modules.auth.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
-import com.devtomi.nutri.databinding.ActivityVerificationEmailBinding;
+import com.devtomi.nutri.R;
+import com.devtomi.nutri.databinding.FragmentVerificationEmailBinding;
 import com.devtomi.nutri.modules.auth.dto.request.ResendCodeDTO;
 import com.devtomi.nutri.modules.auth.dto.request.VerifyCodeDTO;
 
 import java.util.Locale;
 
-public class VerificationEmailActivity extends AppCompatActivity {
+public class VerificationEmailFragment extends Fragment {
 
-    private ActivityVerificationEmailBinding binding;
-    private VerificationEmailViewModel verificationEmailViewModel;
-    private CountDownTimer countDownTimer;
     private static final long TIMER_DURATION_MS = 120_000L;
     private static final long TIMER_INTERVAL_MS = 1_000L;
+
+    private FragmentVerificationEmailBinding binding;
+    private VerificationEmailViewModel verificationEmailViewModel;
+    private CountDownTimer countDownTimer;
     private String email;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityVerificationEmailBinding.inflate(getLayoutInflater());
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentVerificationEmailBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
-        setContentView(binding.getRoot());
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         verificationEmailViewModel = new ViewModelProvider(this).get(VerificationEmailViewModel.class);
 
-        if (getIntent() != null && getIntent().hasExtra("EXTRA_EMAIL")) {
-            email = getIntent().getStringExtra("EXTRA_EMAIL");
+        if (getArguments() != null && getArguments().containsKey("email")) {
+            email = getArguments().getString("email");
             binding.tvEmail.setText(email);
         }
 
@@ -48,9 +60,8 @@ public class VerificationEmailActivity extends AppCompatActivity {
             verificationEmailViewModel.verificationEmail(new VerifyCodeDTO(email, code));
         });
 
-        binding.btnResendCode.setOnClickListener(v -> {
-            verificationEmailViewModel.resendCodeVerification(new ResendCodeDTO(email));
-        });
+        binding.btnResendCode.setOnClickListener(v ->
+                verificationEmailViewModel.resendCodeVerification(new ResendCodeDTO(email)));
     }
 
     private void startTimer() {
@@ -79,36 +90,40 @@ public class VerificationEmailActivity extends AppCompatActivity {
     }
 
     private void configObservers() {
-        verificationEmailViewModel.getVerificationSuccessMessage().observe(this, message -> {
+        verificationEmailViewModel.getVerificationSuccessMessage().observe(getViewLifecycleOwner(), message -> {
             if (message != null) {
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(VerificationEmailActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+
+                NavController navController = Navigation.findNavController(requireView());
+                if (!navController.popBackStack(R.id.loginFragment, false)) {
+                    navController.navigate(R.id.loginFragment);
+                }
             }
         });
 
-        verificationEmailViewModel.getResendSuccessMessage().observe(this, message -> {
+        verificationEmailViewModel.getResendSuccessMessage().observe(getViewLifecycleOwner(), message -> {
             if (message != null) {
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
                 startTimer();
             }
         });
 
-        verificationEmailViewModel.getErrorResult().observe(this, errorMessage -> {
+        verificationEmailViewModel.getErrorResult().observe(getViewLifecycleOwner(), errorMessage -> {
             if (errorMessage != null && !errorMessage.isEmpty()) {
-                Toast.makeText(VerificationEmailActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    // TODO: Al borrar el activity, tambien debemos cancelar el timer, porque sino sigue corriendo y nos puede dar problema de memory leak
-    // pd: Esta colocado en la documentación
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
+
         if (countDownTimer != null) {
             countDownTimer.cancel();
+            countDownTimer = null;
         }
+
+        binding = null;
     }
 }

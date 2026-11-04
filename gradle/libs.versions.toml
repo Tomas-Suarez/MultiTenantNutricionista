@@ -15,6 +15,8 @@ activityKtx = "1.8.0"
 lifecycleLivedataKtx = "2.6.1"
 lifecycleViewmodelKtx = "2.6.1"
 cardview = "1.0.0"
+fragment = "1.9.1"
+navigation = "2.10.2"
 
 [libraries]
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
@@ -34,6 +36,8 @@ activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref
 lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
+fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
+navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
