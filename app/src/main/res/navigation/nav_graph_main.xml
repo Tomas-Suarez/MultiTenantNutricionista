@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.devtomi.nutri.modules.dashboard.ui.DashboardFragment"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+    <fragment
+        android:id="@+id/patientListFragment"
+        android:name="com.devtomi.nutri.modules.patient.ui.PatientListFragment"
+        android:label="fragment_patient_list"
+        tools:layout="@layout/fragment_patient_list" />
+    <fragment
+        android:id="@+id/FIleFragment"
+        android:name="com.devtomi.nutri.modules.professional.ui.FileFragment"
+        android:label="fragment_f_ile"
+        tools:layout="@layout/fragment_f_ile" />
+    <fragment
+        android:id="@+id/subscriptionFragment"
+        android:name="com.devtomi.nutri.modules.tenant.ui.SubscriptionFragment"
+        android:label="fragment_subscription"
+        tools:layout="@layout/fragment_subscription" />
+</navigation>

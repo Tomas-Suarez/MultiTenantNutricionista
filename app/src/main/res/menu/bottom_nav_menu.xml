@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/dashboardFragment"
+        android:icon="@drawable/home"
+        android:title="Inicio" />
+
+    <item
+        android:id="@+id/patientListFragment"
+        android:icon="@drawable/patient"
+        android:title="Pacientes" />
+
+    <item
+        android:id="@+id/filesFragment"
+        android:icon="@drawable/file"
+        android:title="Archivos" />
+
+    <item
+        android:id="@+id/subscriptionFragment"
+        android:icon="@drawable/subscription"
+        android:title="Subscripción" />
+
+</menu>

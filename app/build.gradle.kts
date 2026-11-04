@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.annotation)
     implementation(libs.appcompat)
     implementation(libs.cardview)
+    implementation(libs.legacy.support.v4)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.material)
