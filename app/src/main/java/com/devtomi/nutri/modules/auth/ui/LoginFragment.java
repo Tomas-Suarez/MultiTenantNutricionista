@@ -52,13 +52,19 @@ public class LoginFragment extends Fragment {
 
     private void configObservers() {
         loginViewModel.getLoginSuccess().observe(getViewLifecycleOwner(), success -> {
-            Intent intent = new Intent(requireContext(), MainActivity.class);
-            startActivity(intent);
-            requireActivity().finish();
+            if (Boolean.TRUE.equals(success)) {
+                Intent intent = new Intent(requireContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                requireActivity().finish();
+            }
         });
 
-        loginViewModel.getErrorResult().observe(getViewLifecycleOwner(), errorMessage ->
-                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show());
+        loginViewModel.getErrorResult().observe(getViewLifecycleOwner(), errorMessage -> {
+            if (errorMessage != null && !errorMessage.isEmpty()) {
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

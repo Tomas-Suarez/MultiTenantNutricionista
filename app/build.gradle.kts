@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.fragment)
     implementation(libs.navigation.fragment)
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.squareup.retrofit2:converter-scalars:2.11.0")
