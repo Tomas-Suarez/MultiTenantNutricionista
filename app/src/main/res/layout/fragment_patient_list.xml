@@ -1,13 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".modules.patient.ui.PatientListFragment">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="158dp">
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleGroupRole"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:background="#E8F0FE"
+            android:padding="4dp"
+            app:checkedButton="@id/btnAllPatients"
+            app:cornerRadius="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAllPatients"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Todos"
+                android:textColor="#000000"
+                android:textSize="13sp"
+                app:cornerRadius="8dp"
+                app:iconGravity="textStart"
+                app:iconTint="#000000" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNewPatients"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="23dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Recientes"
+                android:textColor="#000000"
+                android:textSize="13sp"
+                app:cornerRadius="8dp"
+                app:iconGravity="textStart"
+                app:iconTint="#000000" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnInTreatment"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="En tratamiento" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <TextView
+            android:id="@+id/tvMyPatients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Mis pacientes"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="131dp"
+            tools:layout_editor_absoluteY="5dp" />
+
+        <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="335dp"
+            android:layout_height="40dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Buscar pacientes por nombre o ID..."
+            tools:layout_editor_absoluteX="45dp"
+            tools:layout_editor_absoluteY="48dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvListPatients"
+            android:layout_width="408dp"
+            android:layout_height="569dp"
+            tools:layout_editor_absoluteX="2dp"
+            tools:layout_editor_absoluteY="161dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
